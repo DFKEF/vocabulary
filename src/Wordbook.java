@@ -16,16 +16,13 @@ public class Wordbook {
     }
 
     public void addWord(Dict dict) {
-        getCSVfile(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    bw = new BufferedWriter(new FileWriter(csv, true));
-                    if(csv.length() > 0) bw.newLine();
-                    bw.write(dict.getEng() + "/" + dict.getKor() + "/" + dict.isBookmarked());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+        getCSVfile(() -> {
+            try {
+                bw = new BufferedWriter(new FileWriter(csv, true));
+                if (csv.length() > 0) bw.newLine();
+                bw.write(dict.getEng() + "/" + dict.getKor() + "/" + dict.isBookmarked());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
 
@@ -55,7 +52,7 @@ public class Wordbook {
 
     private void setWordList(){
         List<List<String>> raw = new ArrayList<>();
-        String line = "";
+        String line;
 
         // csv 파일에서 단어들을 불러오는 과정 (file.csv -> raw)
         try{
