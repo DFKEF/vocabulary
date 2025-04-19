@@ -74,7 +74,6 @@ public class Wordbook {
     private void getCSVfile(Runnable r) {
         try {
             br = new BufferedReader(new FileReader(csv));
-
             r.run();
         }
         catch (IOException e) {e.printStackTrace();}
