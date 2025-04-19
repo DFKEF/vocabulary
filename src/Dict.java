@@ -1,16 +1,17 @@
 public class Dict {
 
-    String eng;
-    String kor;
+    private String eng;
+    private String kor;
     boolean bookmarked;
 
-    public Dict(String eng, String kor) {
+    public Dict(String eng, String kor, boolean bookmarked) {
         this.eng = eng;
         this.kor = kor;
+        this.bookmarked = bookmarked;
     }
 
-    public void setBookmarked() {
-        this.bookmarked = !this.bookmarked;
+    public boolean setBookmarked() {
+        return this.bookmarked = !this.bookmarked;
     }
 
     public boolean isBookmarked(){

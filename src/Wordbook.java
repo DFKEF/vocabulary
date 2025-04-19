@@ -1,22 +1,44 @@
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Wordbook {
     Map<String, Dict> wordList = new HashMap<>();
     String raw_url;
 
+    private File csv;
+    private BufferedReader br;
+    private BufferedWriter bw;
+
     public Wordbook(String url) {
         this.raw_url = url;
-        setWordList(url);
+        this.csv = new File(url);
+        getCSVfile(this::setWordList);
     }
 
     public void addWord(Dict dict) {
+        getCSVfile(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    bw = new BufferedWriter(new FileWriter(csv, true));
+                    if(csv.length() > 0) bw.newLine();
+                    bw.write(dict.getEng() + "/" + dict.getKor() + "/" + dict.isBookmarked());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
+        wordList.put(dict.getEng(), dict);
     }
 
     public void deleteWord(Dict dict) {
+        wordList.remove(dict.getEng());
 
+    }
+
+    public void setWordBookmark(Dict dict){
+        boolean bookmarked = wordList.get(dict.getEng()).setBookmarked();
     }
 
     public void showWordbook() {
@@ -31,43 +53,39 @@ public class Wordbook {
                 .forEach(System.out::println);
     }
 
-
-    private void setWordList(String url) {
+    private void setWordList(){
         List<List<String>> raw = new ArrayList<>();
-        File csv = new File(url);
-        BufferedReader br = null;
         String line = "";
 
+        // csv 파일에서 단어들을 불러오는 과정 (file.csv -> raw)
+        try{
+            while((line = br.readLine()) != null) {
+                raw.add(new ArrayList<>(Arrays.asList(line.split("/"))));
+            }
+        }catch(IOException e) {e.printStackTrace();}
+
+        // raw 데이터를 wordList에 복제
+        // 단, raw는 List, wordList는 Map
+        raw.forEach(l -> {
+            String english = l.get(0);
+            String korean = l.get(1);
+            boolean bookmark = l.get(2).equals("true");
+            wordList.put(english, new Dict(english, korean, bookmark));
+        });
+    }
+
+    private void getCSVfile(Runnable r) {
         try {
             br = new BufferedReader(new FileReader(csv));
-
-            while((line = br.readLine()) != null) {
-                List<String> aLine = new ArrayList<>();
-                String[] lineArr = line.split("/");
-                aLine = Arrays.asList(lineArr);
-                raw.add(aLine);
-            }
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally{
+            r.run();
+        }
+        catch (IOException e) {e.printStackTrace();}
+        finally{
             try{
                 if(br != null) {br.close();}
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
+                if(bw != null) {bw.close();}
+            } catch(IOException e) {e.printStackTrace();}
         }
-
-        for(List l : raw) {
-            wordList.put(l.get(0).toString(), new Dict(l.get(0).toString(), l.get(1).toString()));
-        }
-
-        /*wordList.values().addAll(
-                raw.stream()
-                        .map(l -> new Dict(l.get(0), l.get(1)))
-                        .collect(Collectors.toList())
-        );*/
-
     }
+
 }
