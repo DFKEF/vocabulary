@@ -31,11 +31,13 @@ public class Wordbook {
 
     public void deleteWord(Dict dict) {
         wordList.remove(dict.getEng());
-
+        getCSVfile(this::modifyCSVfile);
     }
 
-    public void setWordBookmark(Dict dict){
+    public boolean setWordBookmark(Dict dict){
         boolean bookmarked = wordList.get(dict.getEng()).setBookmarked();
+        getCSVfile(this::modifyCSVfile);
+        return bookmarked;
     }
 
     public void showWordbook() {
@@ -69,6 +71,24 @@ public class Wordbook {
             boolean bookmark = l.get(2).equals("true");
             wordList.put(english, new Dict(english, korean, bookmark));
         });
+    }
+
+    private void modifyCSVfile() {
+        try {
+            bw = new BufferedWriter(new FileWriter(csv));
+            wordList.forEach((e, d) -> {
+                String k = d.getKor();
+                boolean book = d.isBookmarked();
+                try {
+                    bw.write(e + "/" + k + "/" + book);
+                    bw.newLine();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void getCSVfile(Runnable r) {

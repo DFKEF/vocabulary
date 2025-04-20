@@ -1,8 +1,13 @@
+import java.util.*;
+
 public class Dict {
 
     private String eng;
     private String kor;
-    boolean bookmarked;
+    private Map<String, Dict> synonyms = new HashMap<>();
+    private boolean bookmarked;
+    private String memo;
+
 
     public Dict(String eng, String kor, boolean bookmarked) {
         this.eng = eng;
@@ -26,6 +31,13 @@ public class Dict {
         return this.kor;
     }
 
+    public void setSynonyms(Dict dict) {synonyms.put(dict.getEng(), dict);}
+
+    public Map<String, Dict> getSynonyms() {return this.synonyms;}
+
+    public void setMemo(String memo) {this.memo = memo;}
+
+    public String getMemo() {return this.memo;}
 
     @Override
     public String toString() {

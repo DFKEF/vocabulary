@@ -11,11 +11,20 @@ public class Main{
             int input = scanner.nextInt();
             if(input < 0) break;
             if(input == 0) wordbook.showWordbook();
-            if(input == 1) wordbook.showBookmarks();
-            if(input == 2) {
+            if(input == 1) {
                 String eng = scanner.next();
                 String kor = scanner.next();
                 wordbook.addWord(new Dict(eng,kor,false));
+            }
+            if(input == 2) {
+                String eng = scanner.next();
+                wordbook.deleteWord(new Dict(eng,null,false));
+            }
+            if(input == 3) wordbook.showBookmarks();
+            if(input == 4) {
+                String eng = scanner.next();
+                boolean bookmarked = wordbook.setWordBookmark(new Dict(eng,null,false));
+                System.out.println(eng + " 단어의 북마크가 " + (bookmarked ? "설정되었습니다." : "해제되었습니다."));
             }
         }
     }
