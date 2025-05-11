@@ -4,7 +4,8 @@ public class Dict {
 
     private String eng;
     private String kor;
-    private Map<String, Dict> synonyms = new HashMap<>();
+    private String examples;
+    private List<String> synonyms = new ArrayList<>();
     private boolean bookmarked;
     private String memo;
 
@@ -31,9 +32,13 @@ public class Dict {
         return this.kor;
     }
 
-    public void setSynonyms(Dict dict) {synonyms.put(dict.getEng(), dict);}
+    public void setExamples(String examples) {this.examples = examples;}
 
-    public Map<String, Dict> getSynonyms() {return this.synonyms;}
+    public String getExamples() {return this.examples;}
+
+    public void setSynonyms(String eng) {synonyms.add(eng);}
+
+    public List<String> getSynonyms() {return this.synonyms;}
 
     public void setMemo(String memo) {this.memo = memo;}
 
