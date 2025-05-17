@@ -25,12 +25,12 @@ public class Main{
                 }
                 if (input == 2) {
                     String eng = scanner.next();
-                    wordbook.deleteWord(new Dict(eng, null, false));
+                    wordbook.deleteWord(eng);
                 }
                 if (input == 3) wordbook.showBookmarks();
                 if (input == 4) {
                     String eng = scanner.next();
-                    boolean bookmarked = wordbook.setWordBookmark(new Dict(eng, null, false));
+                    boolean bookmarked = wordbook.setWordBookmark(eng);
                     System.out.println(eng + " 단어의 북마크가 " + (bookmarked ? "설정되었습니다." : "해제되었습니다."));
                 }
                 if (input == 5) {
