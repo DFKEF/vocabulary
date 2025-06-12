@@ -1,3 +1,5 @@
+package source.model;
+
 import java.util.*;
 
 public class Dict {
