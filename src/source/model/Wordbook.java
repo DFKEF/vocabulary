@@ -1,13 +1,21 @@
 package source.model;
 
+import source.repository.DictRepositoryInteface;
+
 public class Wordbook {
 
     private String name;
     private String memo;
     private boolean bookmarked;
+    private final DictRepositoryInteface repository;
 
-    public Wordbook(String name) {
+    public Wordbook(String name, DictRepositoryInteface repository) {
         this.name = name;
+        this.repository = repository;
+    }
+
+    public DictRepositoryInteface getRepository() {
+        return repository;
     }
 
     public String getName() {

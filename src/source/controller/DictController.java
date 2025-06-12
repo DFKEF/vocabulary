@@ -9,10 +9,10 @@ public class DictController {
     private WordbookDictService service;
     private WordbookDictView view;
 
-    public DictController(Wordbook wordbook, WordbookDictView view, WordbookDictService service) {
+    public DictController(Wordbook wordbook, WordbookDictView view) {
         this.wordbook = wordbook;
         this.view = view;
-        this.service = service;
+        this.service = new WordbookDictService(wordbook.getRepository());
     }
 
     public void init() {
